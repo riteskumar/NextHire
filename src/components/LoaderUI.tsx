@@ -6,7 +6,7 @@ function LoaderUI() {
   return (
     <div className="h-[calc(100vh-4rem-1px)] flex items-center justify-center">
     <Image
-      src="loader.svg"
+      src="/loader.svg"
       alt="loader"
       width={40}
       height={3240}
