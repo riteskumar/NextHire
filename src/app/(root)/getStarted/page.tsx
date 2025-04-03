@@ -4,13 +4,14 @@ import ActionCard from "@/components/ActionCard";
 import { QUICK_ACTIONS } from "@/constants";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useQuery } from "convex/react";
+import ResourceLibrary from "@/components/ResourceLibrary";
 import { useState } from "react";
 // import { api } from "../../../../convex/_generated/api";
 import { api } from "../../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import MeetingModal from "@/components/MeetingModal";
 import LoaderUI from "@/components/LoaderUI";
-import { Loader2Icon, Calendar, Users, Clock } from "lucide-react";
+import { Loader2Icon, Calendar, Users, Clock,BookOpen, FileText, Video, Code, Download  } from "lucide-react";
 import MeetingCard from "@/components/MeetingCard";
 import { motion } from "framer-motion";
 
@@ -19,6 +20,36 @@ const fadeIn = {
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.5 },
 };
+const RESOURCES = [
+  {
+    title: "Interview Guides",
+    description: "Comprehensive guides for technical interviews",
+    icon: BookOpen,
+    type: "guide",
+    count: 12,
+  },
+  {
+    title: "Code Challenges",
+    description: "Practice coding problems with solutions",
+    icon: Code,
+    type: "challenge",
+    count: 45,
+  },
+  {
+    title: "Video Tutorials",
+    description: "Interview preparation videos and tips",
+    icon: Video,
+    type: "video",
+    count: 28,
+  },
+  {
+    title: "Templates",
+    description: "Interview scorecards and feedback forms",
+    icon: FileText,
+    type: "template",
+    count: 8,
+  },
+];
 
 const staggerContainer = {
   animate: {
@@ -55,7 +86,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#f8fafc] dark:bg-gray-900">
       <motion.div
-        className="container max-w-7xl mx-auto p-6 space-y-12"
+        className="container max-w-8xl mx-auto p-6 space-y-12"
         initial="initial"
         animate="animate"
         variants={staggerContainer}
@@ -88,13 +119,17 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="flex-1"
             >
-              <motion.div
+             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6"
+                className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 mb-8"
               >
-                <span className="text-white/80 text-sm">
-                  👋 Welcome to NextHire
+                <span className="flex items-center gap-2 text-white/90 text-sm font-medium">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-800 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-400"></span>
+                  </span>
+                  Hire Smarter, Interview Better 🚀
                 </span>
               </motion.div>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
@@ -145,29 +180,7 @@ export default function Home() {
                 ))}
               </motion.div>
 
-              <motion.div
-                variants={fadeIn}
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-violet-100 dark:border-gray-700"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-violet-100 dark:bg-violet-900/30 rounded-lg">
-                      <Calendar className="h-6 w-6 text-violet-600 dark:text-violet-400" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Total Interviews
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                        {interviews?.length || 0}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
+              
             </motion.div>
 
             <MeetingModal
@@ -193,6 +206,7 @@ export default function Home() {
                 View and join your scheduled interviews
               </motion.p>
             </div>
+            
 
             <motion.div variants={staggerContainer} className="mt-8">
               {interviews === undefined ? (
@@ -221,6 +235,7 @@ export default function Home() {
                     </motion.div>
                   ))}
                 </motion.div>
+                
               ) : (
                 <motion.div
                   variants={fadeIn}
@@ -235,8 +250,10 @@ export default function Home() {
                   </p>
                 </motion.div>
               )}
+<ResourceLibrary/>
             </motion.div>
           </motion.div>
+          
         )}
       </motion.div>
     </div>

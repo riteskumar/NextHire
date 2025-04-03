@@ -13,6 +13,7 @@ export default defineSchema({
   interviews: defineTable({
     title: v.string(),
     description: v.optional(v.string()),
+    
     startTime: v.number(),
     endTime: v.optional(v.number()),
     status: v.string(),

@@ -33,8 +33,9 @@ function InterviewScheduleUI() {
   const [open, setOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-  const interviews = useQuery(api.interviews.getAllInterviews) ?? [];
-  const users = useQuery(api.users.getUsers) ?? [];
+
+  const interviews = useQuery(api.interviews.getAllInterviews) ?? [];  const users = useQuery(api.users.getUsers) ?? [];
+  // const users = useQuery(api.users.getUsers) ?? [];
   const createInterview = useMutation(api.interviews.createInterview);
 
   const candidates = users?.filter((u) => u.role === "candidate");
@@ -50,6 +51,7 @@ function InterviewScheduleUI() {
   });
 
   const scheduleMeeting = async () => {
+    // Keep the validation here inside the function
     if (!client || !user) return;
     if (!formData.candidateId || formData.interviewerIds.length === 0) {
       toast.error("Please select both candidate and at least one interviewer");
@@ -66,6 +68,8 @@ function InterviewScheduleUI() {
 
       const id = crypto.randomUUID();
       const call = client.call("default", id);
+      const candidate = candidates.find(c => c.clerkId === formData.candidateId);
+      const meetingLink = `${window.location.origin}/meeting/${id}`;
 
       await call.getOrCreate({
         data: {
@@ -86,9 +90,44 @@ function InterviewScheduleUI() {
         candidateId,
         interviewerIds,
       });
+     
+      if (candidate?.email) {
+        await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: candidate.email,
+            title: formData.title,
+            description: formData.description,
+            date: new Date(formData.date).toLocaleDateString(), // Convert to Date object and then to locale date string
+            time: formData.time,
+            meetingLink,
+          }),
+        });
+      } else {
+        console.error('Candidate email not found');
+      }
+    
+      for (const interviewerId of formData.interviewerIds) {
+        const interviewer = interviewers.find(i => i.clerkId === interviewerId);
+        if (interviewer?.email) {
+          await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: interviewer.email,
+              title: formData.title,
+              description: formData.description,
+              date: new Date(formData.date).toLocaleDateString(), // Convert to Date object and then to locale date string
+              time: formData.time,
+              meetingLink,
+            }),
+          });
+        }
+      }
 
       setOpen(false);
-      toast.success("Meeting scheduled successfully!");
+      toast.success("Meeting scheduled and notifications sent successfully!");
 
       setFormData({
         title: "",

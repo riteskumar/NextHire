@@ -6,7 +6,7 @@ import {
   SpeakerLayout,
   useCallStateHooks,
 } from "@stream-io/video-react-sdk";
-import { LayoutListIcon, LoaderIcon, UsersIcon } from "lucide-react";
+import { LayoutListIcon, LoaderIcon, UsersIcon, CodeIcon, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+
 import { Button } from "./ui/button";
 import EndCallButton from "./EndCallButton";
 import CodeEditor from "./CodeEditor";
@@ -25,6 +26,7 @@ function MeetingRoom() {
   const router = useRouter();
   const [layout, setLayout] = useState<"grid" | "speaker">("speaker");
   const [showParticipants, setShowParticipants] = useState(false);
+  const [showCodeEditor, setShowCodeEditor] = useState(false);
   const { useCallCallingState } = useCallStateHooks();
 
   const callingState = useCallCallingState();
@@ -46,31 +48,31 @@ function MeetingRoom() {
   }
 
   return (
-    <motion.div 
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    className="h-[calc(100vh-4rem-1px)]"
-  >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="h-[calc(100vh-4rem-1px)]"
+    >
       <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={35} minSize={25} maxSize={100} className="relative">
-          {/* VIDEO LAYOUT */}
-          <motion.div 
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="absolute text-white inset-0 bg-gradient-to-b from-gray-900/5 to-transparent"
-          >
-            {layout === "grid" ? <PaginatedGridLayout /> : <SpeakerLayout />}
+        <ResizablePanel
+          defaultSize={showCodeEditor ? 35 : 100}
+          minSize={35}
+          maxSize={100}
+          className="relative bg-zinc-900 text-white"
+        >
+          <motion.div className="absolute inset-0">
+          <div className="h-full bg-gradient-to-b from-violet-950/20 to-zinc-900/30">
+              {layout === "grid" ? <PaginatedGridLayout /> : <SpeakerLayout />}
+            </div>
 
-            {/* PARTICIPANTS LIST OVERLAY */}
             <AnimatePresence>
               {showParticipants && (
-                <motion.div 
+                <motion.div
                   initial={{ x: 300, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: 300, opacity: 0 }}
                   transition={{ type: "spring", damping: 20 }}
-                  className="absolute right-0 top-0 h-full w-[300px] bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-l border-violet-200/20"
+                 className="absolute right-0 top-0 h-full w-[300px] bg-zinc-900/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-900/90 border-l border-violet-500/20"
                 >
                   <CallParticipantsList onClose={() => setShowParticipants(false)} />
                 </motion.div>
@@ -78,29 +80,26 @@ function MeetingRoom() {
             </AnimatePresence>
           </motion.div>
 
-
-          {/* VIDEO CONTROLS */}
-
-          <motion.div 
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="absolute bottom-4 left-0 right-0"
+            className="absolute bottom-4 left-0 right-0 z-50"
           >
-             <div className="flex flex-col items-center gap-4">
-              <motion.div 
-                className="flex items-center gap-2 flex-wrap justify-center px-4 backdrop-blur-sm bg-black/20 py-3 rounded-2xl mx-4"
-                whileHover={{ scale: 1.02 }}
+            <div className="flex flex-col items-center gap-4 text-white">
+              <motion.div
+               className="flex items-center gap-2 flex-wrap justify-center px-4 backdrop-blur-md bg-zinc-900/80 py-3 rounded-2xl mx-4 border border-violet-500/20 shadow-lg shadow-violet-500/10"
+               whileHover={{ scale: 1.02 }}
               >
                 <CallControls onLeave={() => router.push("/")} />
 
                 <div className="flex items-center gap-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                    <Button 
-                        variant="outline" 
-                        size="icon" 
-                        className="size-10 bg-white/10 border-white/20 hover:bg-white/20 transition-colors"
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="size-10 bg-zinc-800/80 border-violet-500/30 hover:bg-white hover:border-violet-500/50 transition-colors text-violet-100"
                       >
                         <LayoutListIcon className="size-4" />
                       </Button>
@@ -116,12 +115,21 @@ function MeetingRoom() {
                   </DropdownMenu>
 
                   <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-10 bg-white/10 border-white/20 hover:bg-white/20 transition-colors"
+                     variant="outline"
+                     size="icon"
+                     className="size-10 bg-zinc-800/80 border-violet-500/30 hover:bg-white hover:border-violet-500/50 transition-colors text-violet-100"
                     onClick={() => setShowParticipants(!showParticipants)}
                   >
                     <UsersIcon className="size-4" />
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-10 bg-zinc-800/80 border-violet-500/30 hover:bg-white hover:border-violet-500/50 transition-colors text-violet-100"
+                    onClick={() => setShowCodeEditor(!showCodeEditor)}
+                  >
+                    <CodeIcon className="size-4" />
                   </Button>
 
                   <EndCallButton />
@@ -131,14 +139,29 @@ function MeetingRoom() {
           </motion.div>
         </ResizablePanel>
 
-        <ResizableHandle withHandle className="bg-violet-500/20 hover:bg-violet-500/30 transition-colors" />
-
-        <ResizablePanel defaultSize={65} minSize={25}>
-        <CodeEditor />
-        
-        </ResizablePanel>
+        <AnimatePresence>
+          {showCodeEditor && (
+            <>
+              <ResizableHandle withHandle className="bg-violet-500/30 hover:bg-violet-500/50 transition-colors" />
+              <ResizablePanel defaultSize={65} minSize={35} className="bg-zinc-900/95">
+              <div className="relative h-full border-l border-violet-500/20">
+              <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-2 right-2 z-50 hover:bg-violet-500/20 text-violet-100"
+                    onClick={() => setShowCodeEditor(false)}
+                  >
+                    <XIcon className="size-4" />
+                  </Button>
+                  <CodeEditor />
+                </div>
+              </ResizablePanel>
+            </>
+          )}
+        </AnimatePresence>
       </ResizablePanelGroup>
     </motion.div>
   );
 }
+
 export default MeetingRoom;

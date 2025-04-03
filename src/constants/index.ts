@@ -62,8 +62,10 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
   {
     id: "two-sum",
     title: "Two Sum",
-    
-    
+    success: "95%",
+    time: "5m",
+    type: "Easy",
+
     description:
       "Given an array of integers `nums` and an integer `target`, return indices of the two numbers in the array such that they add up to `target`.\n\nYou may assume that each input would have exactly one solution, and you may not use the same element twice.",
     examples: [
@@ -82,25 +84,25 @@ export const CODING_QUESTIONS: CodeQuestion[] = [
   // Write your solution here
   
 }`,
-cpp: `class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        // Write your solution here
+      cpp: `#include <iostream>
+using namespace std;
 
-    }
-};
+int main()
+{
+   
+
+    return 0;
+}
 `,
       python: `def two_sum(nums, target):
     # Write your solution here
     pass`,
-      java: `class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        // Write your solution here
-        
-    },
-    
-}`,
-
+    java: `public class Main
+    {
+      public static void main(String[] args) {
+      
+      }
+    }`,
     },
     constraints: [
       "2 ≤ nums.length ≤ 104",
@@ -112,6 +114,9 @@ public:
   {
     id: "reverse-string",
     title: "Reverse String",
+    success: "90%",
+    time: "10m",
+    type: "Easy",
     description:
       "Write a function that reverses a string. The input string is given as an array of characters `s`.\n\nYou must do this by modifying the input array in-place with O(1) extra memory.",
     examples: [
@@ -129,36 +134,42 @@ public:
   // Write your solution here
   
 }`,
-cpp: `class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        // Write your solution here
+      cpp: `#include <iostream>
+using namespace std;
 
-    }
-};
+int main()
+{
+   
+
+    return 0;
+}
 `,
 
       python: `def reverse_string(s):
     # Write your solution here
     pass`,
-      java: `class Solution {
-    public void reverseString(char[] s) {
-        // Write your solution here
-        
-    }
-}`,
+    java: `public class Main
+    {
+      public static void main(String[] args) {
+      
+      }
+    }`,
     },
   },
   {
     id: "palindrome-number",
     title: "Palindrome Number",
+    success: "85%",
+    time: "15m",
+    type: "Medium",
     description:
       "Given an integer `x`, return `true` if `x` is a palindrome, and `false` otherwise.\n\nAn integer is a palindrome when it reads the same forward and backward.",
     examples: [
       {
         input: "x = 121",
         output: "true",
-        explanation: "121 reads as 121 from left to right and from right to left.",
+        explanation:
+          "121 reads as 121 from left to right and from right to left.",
       },
       {
         input: "x = -121",
@@ -172,24 +183,100 @@ public:
   // Write your solution here
   
 }`,
-cpp: `class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        // Write your solution here
+cpp: `#include <iostream>
+using namespace std;
 
-    }
-};
+int main()
+{
+   
+
+    return 0;
+}
 `,
       python: `def is_palindrome(x):
     # Write your solution here
     pass`,
-      java: `class Solution {
-    public boolean isPalindrome(int x) {
-        // Write your solution here
-        
-    }
+    java: `public class Main
+    {
+      public static void main(String[] args) {
+      
+      }
+    }`,
+    },
+  },
+  {
+    id: "arrayDP",
+    title: "Minimum Cost to Make Array Equalindromic",
+    success: "70%",
+    time: "1h 30m",
+    type: "Hard",
+
+    description: `You are given a 0-indexed integer array nums having length n.
+
+You are allowed to perform a special move any number of times (including zero) on nums. In one special move you perform the following steps in order:
+
+Choose an index i in the range [0, n - 1], and a positive integer x.
+Add |nums[i] - x| to the total cost.
+Change the value of nums[i] to x.
+A palindromic number is a positive integer that remains the same when its digits are reversed. For example, 121, 2552 and 65756 are palindromic numbers whereas 24, 46, 235 are not palindromic numbers.
+
+An array is considered equalindromic if all the elements in the array are equal to an integer y, where y is a palindromic number less than 109.
+
+Return an integer denoting the minimum possible total cost to make nums equalindromic by performing any number of special moves.
+
+ `,
+    examples: [
+      {
+        input: "nums = [1,2,3,4,5]",
+        output: " 6",
+        explanation: ` We can make the array equalindromic by changing all elements to 3 which is a palindromic 
+number. The cost of changing the array to [3,3,3,3,3] using 4 special moves is given by |1 - 3| + |2 - 3| + |4 - 3| + |5 - 3| = 6.
+It can be shown that changing all elements to any palindromic number other than 3 cannot be achieved at a 
+lower cost.`,
+      },
+      {
+        input: "[10,12,13,14,15]",
+        output: "11",
+        explanation: `We can make the array equalindromic by changing all elements to 11 which is a palindromic 
+number. The cost of changing the array to [11,11,11,11,11] using 5 special moves is given by
+|10 - 11| + |12 - 11| + |13 - 11| + |14 - 11| + |15 - 11| = 11.
+It can be shown that changing all elements to any palindromic number other than 11 cannot be achieved at
+a lower cost.`,
+      },
+    ],
+    starterCode: {
+      javascript: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minimumCost = function(nums) {
+    
+};`,
+cpp: `#include <iostream>
+using namespace std;
+
+int main()
+{
+   
+
+    return 0;
+}
+`,
+      python: `class Solution(object):
+    def minimumCost(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        `,
+      java: `public class Main
+{
+	public static void main(String[] args) {
+	
+	}
 }`,
     },
+    constraints: ["1 <= n <= 105", "1 <= nums[i] <= 109"],
   },
 ];
 
@@ -204,6 +291,9 @@ export interface CodeQuestion {
   id: string;
   title: string;
   description: string;
+  success?: string;
+  time?: string;
+  type?: string;
   examples: Array<{
     input: string;
     output: string;
@@ -211,7 +301,7 @@ export interface CodeQuestion {
   }>;
   starterCode: {
     javascript: string;
-    cpp:string;
+    cpp: string;
     python: string;
     java: string;
   };

@@ -1,5 +1,6 @@
 import { CODING_QUESTIONS, LANGUAGES } from "@/constants";
 import { useState } from "react";
+import { Button } from "./ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "./ui/resizable";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
@@ -7,12 +8,60 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { AlertCircleIcon, BookIcon, LightbulbIcon, CheckCircleIcon, TimerIcon, BrainIcon } from "lucide-react";
 import Editor from "@monaco-editor/react";
+import { PlayIcon, LoaderIcon } from "lucide-react";
+import toast from "react-hot-toast";
 import { Badge } from "./ui/badge";
 
 function CodeEditor() {
   const [selectedQuestion, setSelectedQuestion] = useState(CODING_QUESTIONS[0]);
   const [language, setLanguage] = useState<"javascript" | "python" | "java" | "cpp">(LANGUAGES[0].id);
   const [code, setCode] = useState(selectedQuestion.starterCode[language]);
+  const [isCompiling, setIsCompiling] = useState(false);
+  const [output, setOutput] = useState("");
+  const handleCompile = async () => {
+    setIsCompiling(true);
+    try {
+      const response = await fetch('/api/compile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code,
+          language: getLanguageCode(language),
+          input: selectedQuestion.examples[0].input
+        })
+      });
+
+      const result = await response.json();
+      
+      if (response.ok) {
+        setOutput(result.output || 'No output');
+        if (result.statusCode === 200) {
+          toast.success('Code executed successfully!');
+        }
+      } else {
+        setOutput(result.error || 'Execution failed');
+        toast.error('Execution failed');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to execute code');
+      setOutput('Error: Failed to execute code');
+    } finally {
+      setIsCompiling(false);
+    }
+  };
+
+  const getLanguageCode = (lang: string) => {
+    const codes = {
+      javascript: 'nodejs',
+      python: 'python3',
+      java: 'java',
+      cpp: 'cpp17'
+    };
+    return codes[lang as keyof typeof codes];
+  };
 
   const handleQuestionChange = (questionId: string) => {
     const question = CODING_QUESTIONS.find((q) => q.id === questionId)!;
@@ -49,21 +98,22 @@ function CodeEditor() {
                       {selectedQuestion.title}
                     </h2>
                     <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20">
-                     Medium
+                    {selectedQuestion.type}
                     </Badge>
                   </div>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <TimerIcon className="h-4 w-4" />
-                      <span>15 mins</span>
+                      <span>{selectedQuestion.time}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <BrainIcon className="h-4 w-4" />
-                      <span>Success Rate: 65%</span>
+                      <span>{selectedQuestion.success}</span>
                     </div>
+
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="absolute top-20 right-24 flex items-center gap-3">
                   <Select value={selectedQuestion.id} onValueChange={handleQuestionChange}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select question" />
@@ -201,36 +251,54 @@ function CodeEditor() {
 
       {/* Enhanced Code Editor */}
       <ResizablePanel defaultSize={60} maxSize={100}>
-        <motion.div 
-          className="h-full relative"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          
-          <Editor
-            height="100%"
-            defaultLanguage={language}
-            language={language}
-            theme="vs-dark"
-            value={code}
-            onChange={(value) => setCode(value || "")}
-            options={{
-              minimap: { enabled: false },
-              fontSize: 16,
-              lineNumbers: "on",
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-              padding: { top: 16, bottom: 16 },
-              wordWrap: "on",
-              wrappingIndent: "indent",
-              renderLineHighlight: "all",
-              suggestOnTriggerCharacters: true,
-              formatOnPaste: true,
-              formatOnType: true,
-            }}
-          />
-        </motion.div>
+        <div className="h-full flex flex-col">
+          <div className="relative flex-1">
+            <div className="absolute top-2 right-2 z-10">
+              <Button
+                onClick={handleCompile}
+                disabled={isCompiling}
+                className="gap-2"
+              >
+                {isCompiling ? (
+                  <LoaderIcon className="h-4 w-4 animate-spin" />
+                ) : (
+                  <PlayIcon className="h-4 w-4" />
+                )}
+                {isCompiling ? 'Compiling...' : 'Compile & Run'}
+              </Button>
+            </div>
+            
+            <Editor
+              height="100%"
+              defaultLanguage={language}
+              language={language}
+              theme="vs-dark"
+              value={code}
+              onChange={(value) => setCode(value || "")}
+              options={{
+                minimap: { enabled: false },
+                fontSize: 16,
+                lineNumbers: "on",
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 },
+                wordWrap: "on",
+                wrappingIndent: "indent",
+                renderLineHighlight: "all",
+                suggestOnTriggerCharacters: true,
+                formatOnPaste: true,
+                formatOnType: true,
+              }}
+            />
+          </div>
+
+          <div className="h-[200px] border-t bg-muted p-4 overflow-auto">
+            <h3 className="text-sm font-medium mb-2">Output:</h3>
+            <pre className="text-sm font-mono whitespace-pre-wrap">
+              {output || 'Code output will appear here...'}
+            </pre>
+          </div>
+        </div>
       </ResizablePanel>
     </ResizablePanelGroup>
   );

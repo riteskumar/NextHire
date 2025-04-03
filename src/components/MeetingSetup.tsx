@@ -4,7 +4,14 @@ import { Card } from "./ui/card";
 import { CameraIcon, MicIcon, SettingsIcon } from "lucide-react";
 import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
-
+import { cn } from "@/lib/utils";
+const StyledDeviceSettings = () => {
+  return (
+    <div className="bg-background text-white">
+      <DeviceSettings />
+    </div>
+  );
+};
 function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
   const [isCameraDisabled, setIsCameraDisabled] = useState(true);
   const [isMicDisabled, setIsMicDisabled] = useState(false);
@@ -79,7 +86,7 @@ function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
                   </div>
 
                   {/* MIC CONTROL */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between text-white">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                         <MicIcon className="h-5 w-5 text-primary" />
@@ -108,7 +115,7 @@ function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
                         <p className="text-sm text-muted-foreground">Configure devices</p>
                       </div>
                     </div>
-                    <DeviceSettings />
+                    <StyledDeviceSettings />
                   </div>
                 </div>
 

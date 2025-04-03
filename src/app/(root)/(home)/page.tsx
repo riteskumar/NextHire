@@ -19,7 +19,7 @@ export default function WelcomePage() {
           className="mb-12"
         >
           <motion.div
-            className="inline-block px-4 py-1.5 rounded-full bg-violet-500/10 text-violet-500 backdrop-blur-sm border border-violet-500/20 mb-6"
+            className="inline-block px-4 py-1.5 rounded-full  text-black backdrop-blur-sm border border-violet-500/20 mb-6"
             whileHover={{ scale: 1.05 }}
           >
             <span>✨ Welcome to NextHire</span>
