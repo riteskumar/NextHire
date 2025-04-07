@@ -36,15 +36,9 @@ const RESOURCES: Resource[] = [
     description: "Interview preparation videos and tips",
     icon: Video,
     type: "video",
-    count: 28,
+    count: 20,
   },
-  {
-    title: "Templates",
-    description: "Interview scorecards and feedback forms",
-    icon: FileText,
-    type: "template",
-    count: 8,
-  },
+ 
 ];
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -83,13 +77,10 @@ export default function ResourceLibrary() {
             Access interview materials and preparation resources
           </p>
         </div>
-        <button className="text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300 font-medium flex items-center gap-2">
-          <Download className="w-4 h-4" />
-          Download All
-        </button>
+       
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid sm:grid-cols-1 lg:grid-cols-4 gap-10">
         {RESOURCES.map((resource) => (
           <motion.div
             key={resource.title}
@@ -102,13 +93,11 @@ export default function ResourceLibrary() {
             className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-violet-100/20 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all cursor-pointer group"
             onClick={() => handleResourceClick(resource.type)}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 ">
               <div className="p-2 bg-violet-100 dark:bg-violet-900/30 rounded-lg text-violet-600 dark:text-violet-400">
                 <resource.icon className="w-6 h-6" />
               </div>
-              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                {resource.count} items
-              </span>
+              
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors">
               {resource.title}

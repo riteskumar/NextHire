@@ -26,28 +26,28 @@ const RESOURCES = [
     description: "Comprehensive guides for technical interviews",
     icon: BookOpen,
     type: "guide",
-    count: 12,
+    
   },
   {
     title: "Code Challenges",
     description: "Practice coding problems with solutions",
     icon: Code,
     type: "challenge",
-    count: 45,
+   
   },
   {
     title: "Video Tutorials",
     description: "Interview preparation videos and tips",
     icon: Video,
     type: "video",
-    count: 28,
+    
   },
   {
     title: "Templates",
     description: "Interview scorecards and feedback forms",
     icon: FileText,
     type: "template",
-    count: 8,
+   
   },
 ];
 

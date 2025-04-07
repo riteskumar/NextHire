@@ -22,7 +22,7 @@ export default function WelcomePage() {
             className="inline-block px-4 py-1.5 rounded-full  text-black backdrop-blur-sm border border-violet-500/20 mb-6"
             whileHover={{ scale: 1.05 }}
           >
-            <span>✨ Welcome to NextHire</span>
+            <span className="dark:text-white">✨ Welcome to NextHire</span>
           </motion.div>
           <h1 className="text-4xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
             Master Your Technical
@@ -60,15 +60,16 @@ export default function WelcomePage() {
           {[
             {
               title: "Real-time Collaboration",
-              description: "Practice with peers in real-time coding sessions",
+              description: `Host live interviews with integrated video, audio, screen sharing, and a built-in compiler.
+`,
             },
             {
               title: "Multiple Languages",
-              description: "Support for various programming languages",
+              description: "Support for various programming languages  like C++, Python, JavaScript, , and Java.",
             },
             {
-              title: "Interview Tracking",
-              description: "Track your progress and performance",
+              title: "Candidate Learning",
+              description: `Candidates get access to a dedicated Learning Material section to prepare before interviews.`,
             },
           ].map((feature, index) => (
             <motion.div
@@ -77,7 +78,7 @@ export default function WelcomePage() {
               className="p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg border border-violet-100 dark:border-gray-700"
             >
               <h3 className="font-semibold mb-2 text-lg">{feature.title}</h3>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-gray-500 dark:text-gray-400 text-left">
                 {feature.description}
               </p>
             </motion.div>

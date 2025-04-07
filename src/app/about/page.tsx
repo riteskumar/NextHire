@@ -45,18 +45,18 @@ const About = () => {
         >
           {[
             {
-              title: "Live Code Collaboration",
-              description: "Real-time code editing and execution with support for multiple programming languages.",
+              title: `Live Code Collaboration`,
+              description: `Real-time code execution powered by an integrated compiler, enabling candidates to code, compile, and debug together during interviews with multi-language support.`,
               icon: "🚀",
             },
             {
               title: "Video Interviews",
-              description: "High-quality video calls with integrated code editor for seamless technical discussions.",
+              description: `Seamless video and audio calling, screen sharing, and live collaboration — all inside a dedicated interview room. No need for third-party tools, making the interview flow smooth and professional.`,
               icon: "📹",
             },
             {
               title: "Smart Assessment",
-              description: "Comprehensive tools for evaluating candidates' technical skills and problem-solving abilities.",
+              description: `Integrated tools for tracking interview performance, viewing session recordings, and reviewing candidate progress. Includes a Learning Material section to help candidates prepare in advance.`,
               icon: "📊",
             },
           ].map((feature, index) => (
@@ -76,31 +76,7 @@ const About = () => {
         </motion.div>
 
         {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl p-8 md:p-12 mb-16 text-white"
-        >
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            {[
-              { number: "1000+", label: "Interviews Conducted" },
-              { number: "50+", label: "Companies Trust Us" },
-              { number: "95%", label: "Satisfaction Rate" },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 * index }}
-              >
-                <div className="text-4xl font-bold mb-2">{stat.number}</div>
-                <div className="text-violet-200">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
+       
         {/* Mission Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
